@@ -28,7 +28,7 @@ fetch_deps() {
   git clone https://github.com/diego-treitos/linux-smart-enumeration
   git clone https://github.com/a13xp0p0v/kconfig-hardened-check
   git clone https://github.com/trimstray/otseca
-  #git clone https://github.com/pentestmonkey/unix-privesc-check
+  #git clone https://github.com/inquisb/unix-privesc-check
 
   # CentOS / RHEL
   #yum install openscap-scanner scap-security-guide
