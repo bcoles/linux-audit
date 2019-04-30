@@ -56,7 +56,7 @@ check_pentest() {
   ./so-check/so-check.sh | tee "${LOGDIR}/so-check.log"
 
   info "Running LinuxAudit..."
-  ./LinuxAudit/LinuxAudit.sh | tee "${LOGDIR}/LinuxAudit.log"
+  sh ./LinuxAudit/LinuxAudit.sh | tee "${LOGDIR}/LinuxAudit.log"
 
   info "Running linux-smart-enumeration..."
   ./linux-smart-enumeration/lse.sh -i -l1 | tee "${LOGDIR}/lse.log"
