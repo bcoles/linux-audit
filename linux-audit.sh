@@ -82,6 +82,7 @@ https://github.com/lateralblast/lunar
 https://github.com/diego-treitos/linux-smart-enumeration
 https://github.com/a13xp0p0v/kconfig-hardened-check
 https://github.com/itsKindred/jalesc
+https://github.com/rebootuser/LinEnum
 https://github.com/trimstray/otseca
 https://github.com/inquisb/unix-privesc-check
 _EOF_
@@ -147,6 +148,9 @@ function check_pentest() {
 
   info "Running jalesc ..."
   bash "${_tools_directory}/jalesc/jalesc.sh" | tee "${_audit_directory}/jalesc.log"
+
+  info "Running LinEnum ..."
+  bash "${_tools_directory}/LinEnum/LinEnum.sh" -t -r "${_audit_directory}/LinEnum.log"
 
   info "Running linux-smart-enumeration..."
   bash "${_tools_directory}/linux-smart-enumeration/lse.sh" -i -l1 | tee "${_audit_directory}/lse.log"
