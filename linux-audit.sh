@@ -8,8 +8,6 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-__script_params=("$@")
-
 umask 0077
 
 readonly _rel="$(dirname "$(readlink -f "$0")")"
@@ -70,7 +68,7 @@ function setup() {
   fi
 
   if ! command_exists python3 ; then
-    warn "python3 is not in \$PATH"
+    warn "python3 is not in \$PATH! Some checks will be skipped ..."
   fi
 
   set +e
@@ -137,11 +135,15 @@ function check_pentest() {
   info "Running LinuxAudit..."
   bash "${_tools_directory}/LinuxAudit/LinuxAudit.sh" | tee "${_audit_directory}/LinuxAudit.log"
 
-  info "Running kconfig-hardened-check..."
-  python3 "${_tools_directory}/kconfig-hardened-check/kconfig-hardened-check.py" -c "${_tools_directory}/kconfig-hardened-check/config_files/kspp-recommendations/kspp-recommendations-x86-64.config" | tee "${_audit_directory}/kconfig-hardened-check.log"
+  if command_exists python3 ; then
+    info "Running kconfig-hardened-check..."
+    python3 "${_tools_directory}/kconfig-hardened-check/kconfig-hardened-check.py" -c "${_tools_directory}/kconfig-hardened-check/config_files/kspp-recommendations/kspp-recommendations-x86-64.config" | tee "${_audit_directory}/kconfig-hardened-check.log"
+  fi
 
-  info "Running uptux..."
-  python3 "${_tools_directory}/uptux/uptux.py" -n | tee "${_audit_directory}/uptux.log"
+  if command_exists python3 ; then
+    info "Running uptux..."
+    python3 "${_tools_directory}/uptux/uptux.py" -n | tee "${_audit_directory}/uptux.log"
+  fi
 
   info "Running jalesc ..."
   bash "${_tools_directory}/jalesc/jalesc.sh" | tee "${_audit_directory}/jalesc.log"
@@ -176,11 +178,13 @@ function check_priv() {
   info "Running LinuxAudit..."
   bash "${_tools_directory}/LinuxAudit/LinuxAudit.sh" | tee "${_audit_directory}/LinuxAudit.log"
 
-  info "Running kconfig-hardened-check..."
-  python3 "${_tools_directory}/kconfig-hardened-check/kconfig-hardened-check.py" -c "${_tools_directory}/kconfig-hardened-check/config_files/kspp-recommendations/kspp-recommendations-x86-64.config" | tee "${_audit_directory}/kconfig-hardened-check.log"
+  if command_exists python3 ; then
+    info "Running kconfig-hardened-check..."
+    python3 "${_tools_directory}/kconfig-hardened-check/kconfig-hardened-check.py" -c "${_tools_directory}/kconfig-hardened-check/config_files/kspp-recommendations/kspp-recommendations-x86-64.config" | tee "${_audit_directory}/kconfig-hardened-check.log"
+  fi
 
   info "Running otseca..."
-  "${_tools_directory}/otseca/bin/otseca" --ignore-failed --format html --output "${_audit_directory}/otseca-report"
+  bash "${_tools_directory}/otseca/bin/otseca" --ignore-failed --format html --output "${_audit_directory}/otseca-report"
 
   # RHEL / CentOS
   #if command_exists oscap ; then
@@ -189,6 +193,6 @@ function check_priv() {
 }
 
 if [[ "${BASH_SOURCE[0]}" = "$0" ]]; then
-  __main__ "${__script_params[@]}"
+  __main__
   exit 0
 fi
