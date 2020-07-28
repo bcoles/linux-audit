@@ -81,7 +81,7 @@ https://github.com/initstring/uptux
 https://github.com/lateralblast/lunar
 https://github.com/diego-treitos/linux-smart-enumeration
 https://github.com/a13xp0p0v/kconfig-hardened-check
-https://github.com/itsKindred/jalesc
+https://github.com/bcoles/jalesc
 https://github.com/rebootuser/LinEnum
 https://github.com/trimstray/otseca
 https://github.com/inquisb/unix-privesc-check
