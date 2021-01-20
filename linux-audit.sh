@@ -1,7 +1,7 @@
 #!/bin/bash
 # linux-audit v0.0.1
 # Lazily wraps various Linux system auditing tools.
-# Intended for personal use. Do not use.
+# Intended for personal use. Use at own risk.
 # Don't run this on production systems.
 #
 # ~ bcoles 2019
@@ -85,6 +85,7 @@ https://github.com/bcoles/jalesc
 https://github.com/rebootuser/LinEnum
 https://github.com/trimstray/otseca
 https://github.com/inquisb/unix-privesc-check
+https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite
 _EOF_
   set -e
 
@@ -154,6 +155,9 @@ function check_pentest() {
 
   info "Running linux-smart-enumeration..."
   bash "${_tools_directory}/linux-smart-enumeration/lse.sh" -i -l1 | tee "${_audit_directory}/lse.log"
+
+  info "Running PEAS..."
+  bash "${_tools_directory}/privilege-escalation-awesome-scripts-suite/linPEAS/linpeas.sh" | tee "${_audit_directory}/lse.log"
 
   #info "Running UNIX Privesc Check..."
   #cd "${_tools_directory}/unix-privesc-check"
