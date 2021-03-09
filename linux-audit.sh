@@ -157,7 +157,7 @@ function check_pentest() {
   bash "${_tools_directory}/linux-smart-enumeration/lse.sh" -i -l1 | tee "${_audit_directory}/lse.log"
 
   info "Running PEAS..."
-  bash "${_tools_directory}/privilege-escalation-awesome-scripts-suite/linPEAS/linpeas.sh" | tee "${_audit_directory}/lse.log"
+  bash "${_tools_directory}/privilege-escalation-awesome-scripts-suite/linPEAS/linpeas.sh" | tee "${_audit_directory}/linpeas.log"
 
   #info "Running UNIX Privesc Check..."
   #cd "${_tools_directory}/unix-privesc-check"
