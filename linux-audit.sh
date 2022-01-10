@@ -86,6 +86,7 @@ https://github.com/rebootuser/LinEnum
 https://github.com/trimstray/otseca
 https://github.com/inquisb/unix-privesc-check
 https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite
+https://github.com/slimm609/checksec.sh
 _EOF_
   set -e
 
@@ -159,6 +160,9 @@ function check_pentest() {
   info "Running PEAS..."
   bash "${_tools_directory}/privilege-escalation-awesome-scripts-suite/linPEAS/linpeas.sh" | tee "${_audit_directory}/linpeas.log"
 
+  info "Running checksec..."
+  bash "${_tools_directory}/checksec.sh/checksec" --proc-all | tee "${_audit_directory}/checksec-proc-all.log"
+
   #info "Running UNIX Privesc Check..."
   #cd "${_tools_directory}/unix-privesc-check"
   #bash "${_tools_directory}/unix-privesc-check/upc.sh" | tee "${_audit_directory}/upc.log"
@@ -193,6 +197,9 @@ function check_priv() {
 
   info "Running otseca..."
   bash "${_tools_directory}/otseca/bin/otseca" --ignore-failed --format html --output "${_audit_directory}/otseca-report"
+
+  info "Running checksec..."
+  bash "${_tools_directory}/checksec.sh/checksec" --proc-all | tee "${_audit_directory}/checksec-proc-all.log"
 
   # RHEL / CentOS
   #if command_exists oscap ; then
