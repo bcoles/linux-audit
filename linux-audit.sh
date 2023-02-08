@@ -85,7 +85,6 @@ https://github.com/bcoles/jalesc
 https://github.com/rebootuser/LinEnum
 https://github.com/trimstray/otseca
 https://github.com/inquisb/unix-privesc-check
-https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite
 https://github.com/slimm609/checksec.sh
 _EOF_
   set -e
@@ -105,6 +104,13 @@ _EOF_
       git clone "${repo}" "${_tools_directory}/${tool}"
     fi
   done <<< "${array}"
+
+  if ! command_exists wget ; then
+    warn "wget is not in \$PATH! Some checks will be skipped ..."
+  else
+    info "Fetching LinPEAS ..."
+    wget https://github.com/carlospolop/PEASS-ng/releases/latest/download/linpeas.sh -O "${_tools_directory}/linpeas.sh"
+  fi
 
   #if command_exists "apt-get"; then
   #  # Debian / Ubuntu
@@ -158,7 +164,7 @@ function check_pentest() {
   bash "${_tools_directory}/linux-smart-enumeration/lse.sh" -i -l1 | tee "${_audit_directory}/lse.log"
 
   info "Running PEAS..."
-  bash "${_tools_directory}/privilege-escalation-awesome-scripts-suite/linPEAS/linpeas.sh" | tee "${_audit_directory}/linpeas.log"
+  bash "${_tools_directory}/linpeas.sh" | tee "${_audit_directory}/linpeas.log"
 
   info "Running checksec..."
   bash "${_tools_directory}/checksec.sh/checksec" --proc-all | tee "${_audit_directory}/checksec-proc-all.log"
