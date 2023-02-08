@@ -140,7 +140,7 @@ function check_pentest() {
 
   if command_exists python3 ; then
     info "Running kconfig-hardened-check..."
-    python3 "${_tools_directory}/kconfig-hardened-check/bin/kconfig-hardened-check" -c "${_tools_directory}/kconfig-hardened-check/kconfig_hardened_check/config_files/kspp-recommendations/kspp-recommendations-x86-64.config" | tee "${_audit_directory}/kconfig-hardened-check.log"
+    python3 "${_tools_directory}/kconfig-hardened-check/bin/kconfig-hardened-check" -c "${_tools_directory}/kconfig-hardened-check/kconfig_hardened_check/config_files/kspp-recommendations/kspp-kconfig-x86-64.config" | tee "${_audit_directory}/kconfig-hardened-check.log"
   fi
 
   if command_exists python3 ; then
@@ -192,7 +192,7 @@ function check_priv() {
 
   if command_exists python3 ; then
     info "Running kconfig-hardened-check..."
-    python3 "${_tools_directory}/kconfig-hardened-check/bin/kconfig-hardened-check" -c "${_tools_directory}/kconfig-hardened-check/kconfig_hardened_check/config_files/kspp-recommendations/kspp-recommendations-x86-64.config" | tee "${_audit_directory}/kconfig-hardened-check.log"
+    python3 "${_tools_directory}/kconfig-hardened-check/bin/kconfig-hardened-check" -c "${_tools_directory}/kconfig-hardened-check/kconfig_hardened_check/config_files/kspp-recommendations/kspp-kconfig-x86-64.config" | tee "${_audit_directory}/kconfig-hardened-check.log"
   fi
 
   info "Running otseca..."
