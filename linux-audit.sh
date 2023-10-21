@@ -76,7 +76,6 @@ function setup() {
 https://github.com/mzet-/linux-exploit-suggester
 https://github.com/CISOfy/lynis
 https://github.com/bcoles/so-check
-https://github.com/sokdr/LinuxAudit
 https://github.com/initstring/uptux
 https://github.com/lateralblast/lunar
 https://github.com/diego-treitos/linux-smart-enumeration
@@ -141,9 +140,6 @@ function check_pentest() {
   info "Running so-check..."
   bash "${_tools_directory}/so-check/so-check.sh" | tee "${_audit_directory}/so-check.log"
 
-  info "Running LinuxAudit..."
-  bash "${_tools_directory}/LinuxAudit/LinuxAudit.sh" | tee "${_audit_directory}/LinuxAudit.log"
-
   if command_exists python3 ; then
     info "Running kernel-hardening-checker..."
     python3 "${_tools_directory}/kernel-hardening-checker/bin/kernel-hardening-checker" -l /proc/cmdline -c "/boot/config-$(uname -r)" | tee "${_audit_directory}/kernel-hardening-checker.log"
@@ -192,9 +188,6 @@ function check_priv() {
 
   info "Running lunar..."
   bash "${_tools_directory}/lunar/lunar.sh" -a | tee "${_audit_directory}/lunar.log"
-
-  info "Running LinuxAudit..."
-  bash "${_tools_directory}/LinuxAudit/LinuxAudit.sh" | tee "${_audit_directory}/LinuxAudit.log"
 
   if command_exists python3 ; then
     info "Running kernel-hardening-checker..."
