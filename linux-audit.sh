@@ -80,7 +80,7 @@ https://github.com/sokdr/LinuxAudit
 https://github.com/initstring/uptux
 https://github.com/lateralblast/lunar
 https://github.com/diego-treitos/linux-smart-enumeration
-https://github.com/a13xp0p0v/kconfig-hardened-check
+https://github.com/a13xp0p0v/kernel-hardening-checker
 https://github.com/bcoles/jalesc
 https://github.com/rebootuser/LinEnum
 https://github.com/trimstray/otseca
@@ -145,8 +145,8 @@ function check_pentest() {
   bash "${_tools_directory}/LinuxAudit/LinuxAudit.sh" | tee "${_audit_directory}/LinuxAudit.log"
 
   if command_exists python3 ; then
-    info "Running kconfig-hardened-check..."
-    python3 "${_tools_directory}/kconfig-hardened-check/bin/kconfig-hardened-check" -l /proc/cmdline -c "/boot/config-$(uname -r)" | tee "${_audit_directory}/kconfig-hardened-check.log"
+    info "Running kernel-hardening-checker..."
+    python3 "${_tools_directory}/kernel-hardening-checker/bin/kernel-hardening-checker" -l /proc/cmdline -c "/boot/config-$(uname -r)" | tee "${_audit_directory}/kernel-hardening-checker.log"
   fi
 
   if command_exists python3 ; then
@@ -197,8 +197,8 @@ function check_priv() {
   bash "${_tools_directory}/LinuxAudit/LinuxAudit.sh" | tee "${_audit_directory}/LinuxAudit.log"
 
   if command_exists python3 ; then
-    info "Running kconfig-hardened-check..."
-    python3 "${_tools_directory}/kconfig-hardened-check/bin/kconfig-hardened-check" -l /proc/cmdline -c "/boot/config-$(uname -r)" | tee "${_audit_directory}/kconfig-hardened-check.log"
+    info "Running kernel-hardening-checker..."
+    python3 "${_tools_directory}/kernel-hardening-checker/bin/kernel-hardening-checker" -l /proc/cmdline -c "/boot/config-$(uname -r)" | tee "${_audit_directory}/kernel-hardening-checker.log"
   fi
 
   info "Running otseca..."
