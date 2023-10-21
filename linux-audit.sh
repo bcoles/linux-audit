@@ -83,7 +83,6 @@ https://github.com/a13xp0p0v/kernel-hardening-checker
 https://github.com/bcoles/jalesc
 https://github.com/rebootuser/LinEnum
 https://github.com/trimstray/otseca
-https://github.com/inquisb/unix-privesc-check
 https://github.com/slimm609/checksec.sh
 _EOF_
   set -e
@@ -164,11 +163,6 @@ function check_pentest() {
 
   info "Running checksec..."
   bash "${_tools_directory}/checksec.sh/checksec" --proc-all | tee "${_audit_directory}/checksec-proc-all.log"
-
-  #info "Running UNIX Privesc Check..."
-  #cd "${_tools_directory}/unix-privesc-check"
-  #bash "${_tools_directory}/unix-privesc-check/upc.sh" | tee "${_audit_directory}/upc.log"
-  #cd "${_rel}"
 }
 
 function check_priv() {
