@@ -1,5 +1,5 @@
 #!/bin/bash
-# linux-audit v0.0.1
+# linux-audit v0.0.1-20231020
 # Lazily wraps various Linux system auditing tools.
 # Intended for personal use. Use at own risk.
 # Don't run this on production systems.
@@ -10,13 +10,22 @@ IFS=$'\n\t'
 
 umask 0077
 
-readonly _rel="$(dirname "$(readlink -f "$0")")"
+readonly _version="0.0.1-20231020"
+
+_rel="$(dirname "$(readlink -f "$0")")"
+readonly _rel
+
 readonly _tools_directory="${_rel}/tools"
 readonly _logs_directory="${_rel}/logs"
-readonly _audit_name="$(hostname)-$(date +%Y%m%d%H%M%S)-linux-audit"
-readonly _audit_directory="${_logs_directory}/${_audit_name}"
 
-readonly _version="0.0.1"
+_host_name="$(hostname || uname -n)" || exit
+readonly _host_name
+
+_date="$(date +%Y%m%d%H%M%S)" || exit
+readonly _date
+
+readonly _audit_name="${_host_name}-${_date}-linux-audit"
+readonly _audit_directory="${_logs_directory}/${_audit_name}"
 
 # Enable automatic updating of dependencies
 readonly _update_deps="true"
@@ -41,7 +50,7 @@ function audit() {
 
   echo
   info "Date:\t$(date)"
-  info "Hostname:\t$(hostname)"
+  info "Hostname:\t${_host_name}"
   info "System:\t$(uname -a)"
   info "User:\t$(id)"
   info "Log:\t${_audit_directory}"
