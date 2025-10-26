@@ -70,7 +70,7 @@ function command_exists () {
 function setup() {
   mkdir -p "${_tools_directory}"
 
-  info "Checking dependencies..."
+  info "Checking dependencies ..."
 
   if ! command_exists git ; then
     error "git is not in \$PATH"
@@ -85,7 +85,6 @@ function setup() {
 https://github.com/mzet-/linux-exploit-suggester
 https://github.com/CISOfy/lynis
 https://github.com/bcoles/so-check
-https://github.com/bcoles/rootkit-signal-hunter
 https://github.com/initstring/uptux
 https://github.com/lateralblast/lunar
 https://github.com/diego-treitos/linux-smart-enumeration
@@ -117,7 +116,7 @@ _EOF_
     warn "wget is not in \$PATH! Some checks will be skipped ..."
   else
     info "Fetching LinPEAS ..."
-    wget https://github.com/carlospolop/PEASS-ng/releases/latest/download/linpeas.sh -O "${_tools_directory}/linpeas.sh"
+    wget https://github.com/carlospolop/PEASS-ng/releases/latest/download/linpeas.sh -O "${_tools_directory}/linpeas.sh" && chmod +x "${_tools_directory}/linpeas.sh"
 
     info "Fetching Rootkit Signal Hunter ..."
     wget https://github.com/bcoles/rootkit-signal-hunter/releases/download/0.2.0/rootkit-signal-hunter-0.2.0-x86_64-unknown-linux-musl -O "${_tools_directory}/rootkit-signal-hunter-0.2.0-x86_64-unknown-linux-musl" && chmod +x "${_tools_directory}/rootkit-signal-hunter-0.2.0-x86_64-unknown-linux-musl"
@@ -137,28 +136,28 @@ _EOF_
 
 function check_pentest() {
 
-  info "Running unprivileged checks..."
+  info "Running unprivileged checks ..."
   echo
 
-  info "Running linux-exploit-suggester..."
+  info "Running linux-exploit-suggester ..."
   bash "${_tools_directory}/linux-exploit-suggester/linux-exploit-suggester.sh" --checksec | tee "${_audit_directory}/les-checksec.log"
   bash "${_tools_directory}/linux-exploit-suggester/linux-exploit-suggester.sh" | tee "${_audit_directory}/les.log"
 
-  info "Running lynis..."
+  info "Running lynis ..."
   cd "${_tools_directory}/lynis" || exit
   "${_tools_directory}/lynis/lynis" --pentest --quick --log-file "${_audit_directory}/lynis.log" --report-file "${_audit_directory}/lynis.report" audit system
   cd "${_rel}" || exit
 
-  info "Running so-check..."
+  info "Running so-check ..."
   bash "${_tools_directory}/so-check/so-check.sh" | tee "${_audit_directory}/so-check.log"
 
   if command_exists python3 ; then
-    info "Running kernel-hardening-checker..."
+    info "Running kernel-hardening-checker ..."
     python3 "${_tools_directory}/kernel-hardening-checker/bin/kernel-hardening-checker" -l /proc/cmdline -c "/boot/config-$(uname -r)" | tee "${_audit_directory}/kernel-hardening-checker.log"
   fi
 
   if command_exists python3 ; then
-    info "Running uptux..."
+    info "Running uptux ..."
     python3 "${_tools_directory}/uptux/uptux.py" -n | tee "${_audit_directory}/uptux.log"
   fi
 
@@ -168,46 +167,46 @@ function check_pentest() {
   info "Running LinEnum ..."
   bash "${_tools_directory}/LinEnum/LinEnum.sh" -t -r "${_audit_directory}/LinEnum.log"
 
-  info "Running linux-smart-enumeration..."
+  info "Running linux-smart-enumeration ..."
   bash "${_tools_directory}/linux-smart-enumeration/lse.sh" -i -l1 | tee "${_audit_directory}/lse.log"
 
   info "Running Rootkit Signal Hunter ..."
   bash "${_tools_directory}/rootkit-signal-hunter-0.2.0-x86_64-unknown-linux-musl" | tee "${_audit_directory}/rootkit-signal-hunter.log"
 
-  info "Running PEAS..."
+  info "Running LinPEAS ..."
   bash "${_tools_directory}/linpeas.sh" | tee "${_audit_directory}/linpeas.log"
 
-  info "Running checksec..."
+  info "Running checksec ..."
   bash "${_tools_directory}/checksec.sh/checksec" --proc-all | tee "${_audit_directory}/checksec-proc-all.log"
 }
 
 function check_priv() {
 
-  info "Running privileged checks..."
+  info "Running privileged checks ..."
   echo
 
-  info "Running linux-exploit-suggester..."
+  info "Running linux-exploit-suggester ..."
   bash "${_tools_directory}/linux-exploit-suggester/linux-exploit-suggester.sh" --checksec | tee "${_audit_directory}/les-checksec.log"
   bash "${_tools_directory}/linux-exploit-suggester/linux-exploit-suggester.sh" | tee "${_audit_directory}/les.log"
 
-  info "Running lynis..."
+  info "Running lynis ..."
   chown -R 0:0 "${_tools_directory}/lynis"
   cd "${_tools_directory}/lynis" || exit
   "${_tools_directory}/lynis/lynis" --quick --log-file "${_audit_directory}/lynis.log" --report-file "${_audit_directory}/lynis.report" audit system
   cd "${_rel}" || exit
 
-  info "Running lunar..."
+  info "Running lunar ..."
   bash "${_tools_directory}/lunar/lunar.sh" -a | tee "${_audit_directory}/lunar.log"
 
   if command_exists python3 ; then
-    info "Running kernel-hardening-checker..."
+    info "Running kernel-hardening-checker ..."
     python3 "${_tools_directory}/kernel-hardening-checker/bin/kernel-hardening-checker" -l /proc/cmdline -c "/boot/config-$(uname -r)" | tee "${_audit_directory}/kernel-hardening-checker.log"
   fi
 
-  info "Running otseca..."
+  info "Running otseca ..."
   bash "${_tools_directory}/otseca/bin/otseca" --ignore-failed --format html --output "${_audit_directory}/otseca-report"
 
-  info "Running checksec..."
+  info "Running checksec ..."
   bash "${_tools_directory}/checksec.sh/checksec" --proc-all | tee "${_audit_directory}/checksec-proc-all.log"
 
   # RHEL / CentOS
