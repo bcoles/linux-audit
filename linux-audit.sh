@@ -85,6 +85,7 @@ function setup() {
 https://github.com/mzet-/linux-exploit-suggester
 https://github.com/CISOfy/lynis
 https://github.com/bcoles/so-check
+https://github.com/bcoles/rootkit-signal-hunter
 https://github.com/initstring/uptux
 https://github.com/lateralblast/lunar
 https://github.com/diego-treitos/linux-smart-enumeration
@@ -117,6 +118,9 @@ _EOF_
   else
     info "Fetching LinPEAS ..."
     wget https://github.com/carlospolop/PEASS-ng/releases/latest/download/linpeas.sh -O "${_tools_directory}/linpeas.sh"
+
+    info "Fetching Rootkit Signal Hunter ..."
+    wget https://github.com/bcoles/rootkit-signal-hunter/releases/download/0.2.0/rootkit-signal-hunter-0.2.0-x86_64-unknown-linux-musl -O "${_tools_directory}/rootkit-signal-hunter-0.2.0-x86_64-unknown-linux-musl" && chmod +x "${_tools_directory}/rootkit-signal-hunter-0.2.0-x86_64-unknown-linux-musl"
   fi
 
   #if command_exists "apt-get"; then
@@ -166,6 +170,9 @@ function check_pentest() {
 
   info "Running linux-smart-enumeration..."
   bash "${_tools_directory}/linux-smart-enumeration/lse.sh" -i -l1 | tee "${_audit_directory}/lse.log"
+
+  info "Running Rootkit Signal Hunter ..."
+  bash "${_tools_directory}/rootkit-signal-hunter-0.2.0-x86_64-unknown-linux-musl" | tee "${_audit_directory}/rootkit-signal-hunter.log"
 
   info "Running PEAS..."
   bash "${_tools_directory}/linpeas.sh" | tee "${_audit_directory}/linpeas.log"
