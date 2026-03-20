@@ -120,6 +120,9 @@ _EOF_
 
     info "Fetching Rootkit Signal Hunter ..."
     wget https://github.com/bcoles/rootkit-signal-hunter/releases/download/0.2.0/rootkit-signal-hunter-0.2.0-x86_64-unknown-linux-musl -O "${_tools_directory}/rootkit-signal-hunter-0.2.0-x86_64-unknown-linux-musl" && chmod +x "${_tools_directory}/rootkit-signal-hunter-0.2.0-x86_64-unknown-linux-musl"
+
+    info "Fetching auth-log-scraper ..."
+    wget https://github.com/bcoles/auth-log-scraper/releases/download/v0.1.0/auth-log-scraper-v0.1.0-x86_64-unknown-linux-musl.tar.gz -O "${_tools_directory}/auth-log-scraper-v0.1.0-x86_64-unknown-linux-musl.tar.gz" && tar zxvf "${_tools_directory}/auth-log-scraper-v0.1.0-x86_64-unknown-linux-musl.tar.gz" -C "${_tools_directory}" && chmod +x "${_tools_directory}/auth-log-scraper-v0.1.0-x86_64-unknown-linux-musl/auth-log-scraper"
   fi
 
   #if command_exists "apt-get"; then
@@ -173,6 +176,9 @@ function check_pentest() {
   info "Running Rootkit Signal Hunter ..."
   bash "${_tools_directory}/rootkit-signal-hunter-0.2.0-x86_64-unknown-linux-musl" | tee "${_audit_directory}/rootkit-signal-hunter.log"
 
+  info "Running auth-log-scraper ..."
+  "${_tools_directory}/auth-log-scraper-v0.1.0-x86_64-unknown-linux-musl/auth-log-scraper" --strict-usernames | tee "${_audit_directory}/auth-log-scraper.log"
+
   info "Running LinPEAS ..."
   bash "${_tools_directory}/linpeas.sh" | tee "${_audit_directory}/linpeas.log"
 
@@ -202,6 +208,9 @@ function check_priv() {
     info "Running kernel-hardening-checker ..."
     python3 "${_tools_directory}/kernel-hardening-checker/bin/kernel-hardening-checker" -l /proc/cmdline -c "/boot/config-$(uname -r)" | tee "${_audit_directory}/kernel-hardening-checker.log"
   fi
+
+  info "Running auth-log-scraper ..."
+  "${_tools_directory}/auth-log-scraper-v0.1.0-x86_64-unknown-linux-musl/auth-log-scraper" --strict-usernames | tee "${_audit_directory}/auth-log-scraper.log"
 
   info "Running otseca ..."
   bash "${_tools_directory}/otseca/bin/otseca" --ignore-failed --format html --output "${_audit_directory}/otseca-report"
